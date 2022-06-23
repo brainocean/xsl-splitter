@@ -14,10 +14,16 @@ def load_source_data(filename):
         data.append(rowdata)
     return data
 
+def get_col_index(line, pred):
+    for i in range(len(line)):
+        if line[i] and pred(line[i]):
+            return i
+    raise Exception("Can't find needed column")
+
 def group_data(source_data):
-    UNIT_NAME_COL = 8
-    keyfunc = lambda r:r[UNIT_NAME_COL]
-    grouped_data = groupby(sorted(data[1:], key=keyfunc), keyfunc)
+    unit_name_col = get_col_index(source_data[0], lambda line:"单位名称" in line)
+    keyfunc = lambda r:r[unit_name_col]
+    grouped_data = groupby(sorted(source_data[1:], key=keyfunc), keyfunc)
     target_data = {}
     for key, rows_gen in grouped_data:
         rows = []
