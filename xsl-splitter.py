@@ -51,7 +51,8 @@ def write_one_target_xls(filename, header_line, rows):
 
 def write_target_xls(header_line, data):
     folder_name = "target/" + os.path.splitext(args.source_file)[0]
-    os.makedirs(folder_name)
+    if not os.path.isdir(folder_name):
+        os.makedirs(folder_name)
     for k in data.keys():
         print("正在写入", k, len(data[k]), "行数据")
         write_one_target_xls(folder_name + "/" + k + ".xlsx", header_line, data[k])
