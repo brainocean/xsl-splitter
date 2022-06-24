@@ -55,8 +55,9 @@ source_data = None
 
 sg.theme('Dark Grey 13')
 
-def updateColumnCombo(window, cols):
+def resetColumnCombo(window, cols):
     window['-column-combo-'].update(values=cols)
+    window['执行'].update(disabled=True)
 
 layout = [[sg.Text('源数据文件')],
           [sg.Input(key='-source-filename-', enable_events=True, expand_x=True, disabled=True),
@@ -78,7 +79,7 @@ while True:  # Event Loop
         source_path = values['-source-filename-']
         print("读入" + source_path)
         source_data = load_source_data(source_path)
-        updateColumnCombo(window, source_data[0])
+        resetColumnCombo(window, source_data[0])
         window["-target-folder-"].update(os.path.join(os.path.dirname(source_path), "target"))
         continue
     if event == '-column-combo-':
