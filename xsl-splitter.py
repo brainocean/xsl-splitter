@@ -36,6 +36,7 @@ def resetColumnCombo(window, cols):
 
 def main_loop(window):
     source_df = None
+    source_path = ""
 
     while True:  # Event Loop
         event, values = window.read()
@@ -43,9 +44,10 @@ def main_loop(window):
         if event == "-source-filename-":
             source_path = values['-source-filename-']
             print("读入" + source_path)
-            source_df = pd.read_excel(source_path, index_col=0)
+            source_df = pd.read_excel(source_path, index_col=None)
             resetColumnCombo(window, get_column_list(source_df))
-            window["-target-folder-"].update(os.path.join(os.path.dirname(source_path), "target"))
+            window["-target-folder-"].update(
+                os.path.join(os.path.dirname(source_path), "target"))
             continue
         if event == '-column-combo-':
             if values['-column-combo-'] != None:
@@ -55,13 +57,15 @@ def main_loop(window):
             window.close()
             break
         if event == '执行':
-            target_folder = values['-target-folder-']
+            target_folder = os.path.join(
+                    values['-target-folder-'],
+                    os.path.splitext(os.path.basename(source_path))[0])
             print("分割后文件写入文件夹", target_folder)
             prepare_target_folder(target_folder)
             col = values['-column-combo-']
             for key, grp in source_df.groupby(col):
                 print("正在写入", key , ".xlsx文件.")
-                grp.to_excel(os.path.join(target_folder, key + '.xlsx'), index=False)
+                grp.to_excel(os.path.join(target_folder, str(key) + '.xlsx'), index=False)
             print("文件分割完成.")
 
 main_loop(create_main_window())
