@@ -44,7 +44,10 @@ def main_loop(window):
         if event == "-source-filename-":
             source_path = values['-source-filename-']
             print("读入" + source_path)
-            source_df = pd.read_excel(source_path, index_col=None)
+            if source_path.endswith('.csv'):
+                source_df = pd.read_csv(source_path, index_col=None)
+            else:
+                source_df = pd.read_excel(source_path, index_col=None)
             resetColumnCombo(window, get_column_list(source_df))
             window["-target-folder-"].update(
                 os.path.join(os.path.dirname(source_path), "target"))
