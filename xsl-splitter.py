@@ -18,7 +18,7 @@ def create_main_window():
     sg.theme('Dark Grey 13')
     layout = [[sg.Text('源数据文件')],
             [sg.Input(key='-source-filename-', enable_events=True, expand_x=True, disabled=True),
-            sg.FileBrowse(button_text='打开', target='-source-filename-', file_types=(('Excel', '*.xls *.xlsx'),))],
+            sg.FileBrowse(button_text='打开', target='-source-filename-', file_types=(('Excel', '*.xls *.xlsx *.csv'),))],
             [sg.Text('选择用来分组的列')],
             [sg.Combo([], key='-column-combo-', expand_x=True, enable_events=True, readonly=True)],
             [sg.Output(expand_x=True, s=(20,30))],
